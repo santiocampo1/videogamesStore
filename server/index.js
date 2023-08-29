@@ -1,6 +1,11 @@
-const app = require("./src/app");
+const server = require("./src/app");
+const { conn } = require("./src/db");
 const PORT = 3001;
 
-app.listen(PORT, () => {
-  console.log(`Listening at port ${PORT}`);
+server.listen(PORT, () => {
+  conn.sync({ force: true }).then(() => {
+    server.listen(PORT, () => {
+      console.log(`Listening at ${PORT}`);
+    });
+  });
 });

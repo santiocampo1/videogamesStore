@@ -5,7 +5,7 @@ const app = express();
 
 // Middlewares
 app.use(morgan("dev"));
+app.use(express.json()); // Parser function
 app.use(mainRouter);
-app.use(express.json());
 
 module.exports = app;
