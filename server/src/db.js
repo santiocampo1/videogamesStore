@@ -31,7 +31,11 @@ let capsEntries = entries.map((entry) => [
 ]);
 sequelize.models = Object.fromEntries(capsEntries);
 
-const { Videogame } = sequelize.models;
+const { Videogame, Genre } = sequelize.models;
+
+// Relations
+Videogame.belongsToMany(Genre, { through: "VideogameGenre" });
+Genre.belongsToMany(Videogame, { through: "VideogameGenre" });
 
 module.exports = {
   ...sequelize.models,
