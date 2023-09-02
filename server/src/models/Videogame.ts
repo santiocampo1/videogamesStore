@@ -1,6 +1,6 @@
-const { DataTypes } = require("sequelize");
+import { DataTypes, Sequelize } from "sequelize";
 
-module.exports = (sequelize) => {
+const VideogameModel = (sequelize: Sequelize) => {
   sequelize.define(
     "Videogame",
     {
@@ -41,3 +41,5 @@ module.exports = (sequelize) => {
     { timestamps: false }
   );
 };
+
+export default VideogameModel;

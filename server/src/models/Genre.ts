@@ -1,12 +1,12 @@
-const { DataTypes, UUIDV4 } = require("sequelize");
+import { DataTypes, Sequelize } from "sequelize";
 
-module.exports = (sequelize) => {
+const GenreModel = (sequelize: Sequelize) => {
   sequelize.define(
     "Genre",
     {
       id: {
         type: DataTypes.UUID,
-        defaultValue: UUIDV4,
+        defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
       },
 
@@ -17,3 +17,5 @@ module.exports = (sequelize) => {
     { timestamps: false }
   );
 };
+
+export default GenreModel;

@@ -20,10 +20,10 @@ const modelDefiners: any[] = [];
 fs.readdirSync(path.join(__dirname, "/models"))
   .filter(
     (file: string) =>
-      file.indexOf(".") !== 0 && file !== basename && file.slice(-3) === ".js"
+      file.indexOf(".") !== 0 && file !== basename && file.slice(-3) === ".ts"
   )
   .forEach((file: string) => {
-    modelDefiners.push(require(path.join(__dirname, "/models", file)));
+    modelDefiners.push(require(path.join(__dirname, "/models", file)).default);
   });
 
 modelDefiners.forEach((model: any) => model(sequelize));
