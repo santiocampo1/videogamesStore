@@ -1,6 +1,6 @@
 import { DataTypes, Sequelize } from "sequelize";
 
-const GenreModel = (sequelize: Sequelize) => {
+const genreModel = (sequelize: Sequelize) => {
   sequelize.define(
     "Genre",
     {
@@ -18,4 +18,4 @@ const GenreModel = (sequelize: Sequelize) => {
   );
 };
 
-export default GenreModel;
+export default genreModel;

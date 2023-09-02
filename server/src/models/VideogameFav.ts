@@ -1,8 +1,8 @@
 import { DataTypes, Sequelize } from "sequelize";
 
-const videogameModel = (sequelize: Sequelize) => {
-  sequelize.define(
-    "Videogame",
+const videogameFavModel = (sequelize: Sequelize) => {
+  return sequelize.define(
+    "VideogameFav",
     {
       id: {
         type: DataTypes.UUID,
@@ -38,8 +38,8 @@ const videogameModel = (sequelize: Sequelize) => {
         type: DataTypes.INTEGER,
       },
     },
-    { timestamps: false }
+    { freezeTableName: true, timestamps: false }
   );
 };
 
-export default videogameModel;
+export default videogameFavModel;

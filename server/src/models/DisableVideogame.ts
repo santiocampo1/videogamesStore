@@ -1,8 +1,8 @@
 import { DataTypes, Sequelize } from "sequelize";
 
-const videogameModel = (sequelize: Sequelize) => {
+const disableVideogameModel = (sequelize: Sequelize) => {
   sequelize.define(
-    "Videogame",
+    "DisableVideogame",
     {
       id: {
         type: DataTypes.UUID,
@@ -42,4 +42,4 @@ const videogameModel = (sequelize: Sequelize) => {
   );
 };
 
-export default videogameModel;
+export default disableVideogameModel;
