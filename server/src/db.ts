@@ -34,11 +34,25 @@ entries.forEach((entry: any[]) => {
   modifiedModels[key] = entry[1];
 });
 
-const { Videogame, Genre } = modifiedModels;
+const {
+  Videogame,
+  Genre,
+  User,
+  Admin,
+  DisableUser,
+  DisableVideogame,
+  VideogameFav,
+} = modifiedModels;
 
 // Relations
 Videogame.belongsToMany(Genre, { through: "VideogameGenre" });
 Genre.belongsToMany(Videogame, { through: "VideogameGenre" });
+
+User.belongsToMany(VideogameFav, { through: "UserSelectVideogameAsFav" });
+VideogameFav.belongsToMany(User, { through: "UserSelectVideogameAsFav" });
+
+User.belongsToMany(Videogame, { through: "UserVideogame" });
+Videogame.belongsToMany(User, { through: "UserVideogame" });
 
 export const models = modifiedModels;
 export const conn = sequelize;
