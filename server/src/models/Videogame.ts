@@ -17,7 +17,6 @@ const videogameModel = (sequelize: Sequelize) => {
 
       description: {
         type: DataTypes.STRING,
-        allowNull: false,
       },
 
       platforms: {
@@ -32,6 +31,7 @@ const videogameModel = (sequelize: Sequelize) => {
 
       releaseDate: {
         type: DataTypes.DATEONLY,
+        defaultValue: DataTypes.NOW,
       },
 
       rating: {

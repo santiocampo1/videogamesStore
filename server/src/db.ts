@@ -34,7 +34,7 @@ entries.forEach((entry: any[]) => {
   modifiedModels[key] = entry[1];
 });
 
-const {
+export const {
   Videogame,
   Genre,
   User,
