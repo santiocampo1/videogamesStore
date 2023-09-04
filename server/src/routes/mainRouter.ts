@@ -1,9 +1,9 @@
-import { Router, Request, Response } from "express";
+import { Router } from "express";
+import videogameRouter from "./videogames/videogameRouter";
 
 const mainRouter = Router();
 
-mainRouter.get("/users", (req: Request, res: Response) => {
-  res.status(200).send("hello");
-});
+//? Videogames Routes
+mainRouter.use("/videogames", videogameRouter);
 
 export default mainRouter;
