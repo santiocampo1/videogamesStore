@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import {
   createVideogame,
   getAllVideogames,
+  getVideogameById,
   getVideogameByName,
 } from "../../controllers/videogames/controllerVideogames";
 
@@ -46,5 +47,22 @@ export const postVideogameHandler = async (req: Request, res: Response) => {
     res.status(200).send("Videogame successfully created!");
   } catch (error) {
     res.status(400).json(error);
+  }
+};
+
+// Handler to get Videogame by Id.
+export const getByIdHandler = async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  try {
+    const videogameById = await getVideogameById(id);
+
+    // if (!videogameById) {
+    //   return res.status(400).send(`Videogame with ID ${id} does not exist.`);
+    // }
+
+    res.status(200).json(videogameById);
+  } catch (error) {
+    res.status(400).json((error as Error).message);
   }
 };

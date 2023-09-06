@@ -146,3 +146,18 @@ export const getVideogameByName = async (name: string) => {
     return error;
   }
 };
+
+// Controller to get Videogames by Id.
+export const getVideogameById = async (id: any) => {
+  try {
+    const foundVideogame = await Videogame.findByPk(id);
+
+    if (!foundVideogame) {
+      throw new Error(`Videogame with ID ${id} was not found. Try again.`);
+    }
+
+    return foundVideogame;
+  } catch (error) {
+    throw new Error((error as Error).message);
+  }
+};
