@@ -1,5 +1,6 @@
 import axios from "axios";
 import dotenv from "dotenv";
+import { Op } from "sequelize";
 import { Videogame, Genre } from "../../db";
 dotenv.config();
 const { API_KEY } = process.env;
@@ -82,27 +83,23 @@ export const createVideogame = async (
   rating: number
 ) => {
   try {
-    try {
-      const [createdGame, wasCreated] = await Videogame.findOrCreate({
-        where: { name },
-        defaults: {
-          name,
-          description,
-          platforms,
-          image,
-          releaseDate,
-          rating,
-        },
-      });
+    const [createdGame, wasCreated] = await Videogame.findOrCreate({
+      where: { name },
+      defaults: {
+        name,
+        description,
+        platforms,
+        image,
+        releaseDate,
+        rating,
+      },
+    });
 
-      if (!wasCreated) {
-        throw new Error("Videogame with that name already exists.");
-      }
-
-      return createdGame;
-    } catch (error) {
-      throw error;
+    if (!wasCreated) {
+      throw new Error("Videogame with that name already exists.");
     }
+
+    return createdGame;
   } catch (error) {
     return error;
   }
@@ -117,6 +114,34 @@ export const getAllVideogames = async () => {
     const combinedVideogames = [...videogamesDb, ...videogamesApi];
 
     return combinedVideogames;
+  } catch (error) {
+    return error;
+  }
+};
+
+// Controller to get videogames by name.
+export const getVideogameByName = async (name: string) => {
+  try {
+    const lowerName = name.toLowerCase();
+    const videogamesApi = await getVideogamesApi();
+    const videogamesDb = await Videogame.findAll({
+      where: {
+        name: {
+          [Op.iLike]: `%${name}%`,
+        },
+      },
+    });
+
+    const videogameFoundByApi = videogamesApi.filter((game: Game) =>
+      game.name.toLowerCase().includes(lowerName)
+    );
+    const allResults = [...videogamesDb, ...videogameFoundByApi];
+
+    if (allResults.length === 0) {
+      throw new Error(`Videogame ${name} does not exist. Try again.`);
+    }
+
+    return allResults;
   } catch (error) {
     return error;
   }

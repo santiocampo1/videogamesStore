@@ -2,18 +2,29 @@ import { Request, Response } from "express";
 import {
   createVideogame,
   getAllVideogames,
+  getVideogameByName,
 } from "../../controllers/videogames/controllerVideogames";
 
 // Handler to get all the videogames.
-export const getVideogamesHandler = async (
-  req: Request,
-  res: Response
-): Promise<void> => {
+export const getVideogamesHandler = async (req: Request, res: Response) => {
+  const { name } = req.query;
+
   try {
+    if (name && typeof name === "string") {
+      const foundVideogame: any = await getVideogameByName(name);
+
+      if (foundVideogame.length === 0) {
+        return res
+          .status(400)
+          .send(`Videogame ${name} does not exist. Try again.`);
+      }
+
+      return res.status(200).json(foundVideogame);
+    }
+
     const videogames = await getAllVideogames();
-    res.status(200).json(videogames); // Enviando la respuesta al cliente
+    res.status(200).json(videogames);
   } catch (error) {
-    // Especifica un tipo para el error
     const typedError = error as Error;
     res.status(500).json({ message: typedError.message });
   }
