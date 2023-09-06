@@ -18,12 +18,13 @@ export const getAllGenres = async () => {
     const allGenresData = response.data.results.map(
       (genre: Genre) => genre.name
     );
-    console.log(allGenresData);
 
     await Genre.bulkCreate(
       allGenresData.map((genre: Genre) => ({ name: genre }))
     );
 
-    return "a";
-  } catch (error) {}
+    return allGenresData;
+  } catch (error) {
+    throw new Error((error as Error).message);
+  }
 };

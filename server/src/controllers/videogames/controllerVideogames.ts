@@ -11,6 +11,12 @@ interface PlatformDetail {
     name: string;
   };
 }
+
+interface Genre {
+  id: any;
+  name: string;
+}
+
 interface Game {
   id?: any;
   name: string;
@@ -20,6 +26,7 @@ interface Game {
   background_image: string;
   released: string;
   rating: number;
+  genres: Genre[];
 }
 
 //! Controllers
@@ -41,6 +48,9 @@ export const getVideogamesApi = async () => {
       image: game.background_image,
       releaseDate: game.released,
       rating: game.rating,
+      genres: game.genres.map((genre) => {
+        return genre.name;
+      }),
     }));
 
     return videogamesData;
@@ -67,6 +77,7 @@ export const getVideogamesDb = async () => {
       platforms: videogame.platforms,
       released: videogame.released,
       rating: videogame.rating,
+      genres: videogame.genres.map((genre) => genre.name),
     };
   });
 
@@ -80,7 +91,8 @@ export const createVideogame = async (
   platforms: PlatformDetail[],
   image: string,
   releaseDate: string,
-  rating: number
+  rating: number,
+  genres: Genre[]
 ) => {
   try {
     const [createdGame, wasCreated] = await Videogame.findOrCreate({
@@ -98,6 +110,9 @@ export const createVideogame = async (
     if (!wasCreated) {
       throw new Error("Videogame with that name already exists.");
     }
+
+    const genre = await Genre.findAll({ where: genres });
+    createdGame.setGenres(genre);
 
     return createdGame;
   } catch (error) {

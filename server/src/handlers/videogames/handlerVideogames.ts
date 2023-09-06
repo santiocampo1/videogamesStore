@@ -33,7 +33,8 @@ export const getVideogamesHandler = async (req: Request, res: Response) => {
 
 // Handler to create a videogame.
 export const postVideogameHandler = async (req: Request, res: Response) => {
-  const { name, description, platforms, image, releaseDate, rating } = req.body;
+  const { name, description, platforms, image, releaseDate, rating, genres } =
+    req.body;
 
   try {
     await createVideogame(
@@ -42,7 +43,8 @@ export const postVideogameHandler = async (req: Request, res: Response) => {
       platforms,
       image,
       releaseDate,
-      rating
+      rating,
+      genres
     );
     res.status(200).send("Videogame successfully created!");
   } catch (error) {
