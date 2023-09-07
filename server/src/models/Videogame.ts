@@ -37,6 +37,10 @@ const videogameModel = (sequelize: Sequelize) => {
       rating: {
         type: DataTypes.INTEGER,
       },
+
+      genres: {
+        type: DataTypes.ARRAY(DataTypes.STRING),
+      },
     },
     { timestamps: false }
   );

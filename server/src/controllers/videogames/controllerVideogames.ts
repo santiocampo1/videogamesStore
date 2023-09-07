@@ -77,7 +77,9 @@ export const getVideogamesDb = async () => {
       platforms: videogame.platforms,
       released: videogame.released,
       rating: videogame.rating,
-      genres: videogame.genres.map((genre) => genre.name),
+      genres: videogame.genres
+        ? videogame.genres.map((genre) => genre.name)
+        : [],
     };
   });
 
@@ -111,12 +113,21 @@ export const createVideogame = async (
       throw new Error("Videogame with that name already exists.");
     }
 
-    const genre = await Genre.findAll({ where: genres });
-    createdGame.setGenres(genre);
+    const genreInstances = await Genre.findAll({
+      where: {
+        name: {
+          [Op.in]: genres,
+        },
+      },
+    });
 
-    return createdGame;
+    if (genreInstances.length !== genres.length) {
+      throw new Error("One or more genres do not exist in the database.");
+    }
+
+    await createdGame.setGenres(genreInstances);
   } catch (error) {
-    return error;
+    throw new Error((error as Error).message);
   }
 };
 
@@ -130,7 +141,7 @@ export const getAllVideogames = async () => {
 
     return combinedVideogames;
   } catch (error) {
-    return error;
+    return (error as Error).message;
   }
 };
 
@@ -175,4 +186,34 @@ export const getVideogameById = async (id: any) => {
   } catch (error) {
     throw new Error((error as Error).message);
   }
+};
+
+// Controller to modify a Videogame by Id.
+export const modifyVideogame = async (
+  id: any,
+  name: string,
+  description: string,
+  platforms: PlatformDetail[],
+  image: string,
+  releaseDate: string,
+  rating: number,
+  genres: Genre[]
+) => {
+  const foundVideogame = await Videogame.findByPk(id);
+
+  if (!foundVideogame) {
+    throw new Error("Videogame was not found");
+  }
+
+  await foundVideogame.update({
+    name,
+    description,
+    platforms,
+    image,
+    releaseDate,
+    rating,
+    genres,
+  });
+
+  return foundVideogame;
 };

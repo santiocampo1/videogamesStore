@@ -2,6 +2,7 @@ import { Router } from "express";
 import {
   getByIdHandler,
   getVideogamesHandler,
+  modifyVideogameHandler,
   postVideogameHandler,
 } from "../../handlers/videogames/handlerVideogames";
 
@@ -15,5 +16,8 @@ videogameRouter.get("/", getVideogamesHandler);
 
 // Route to create a videogame in Db.
 videogameRouter.post("/", postVideogameHandler);
+
+// Route to modify a videogame in db.
+videogameRouter.patch("/:id", modifyVideogameHandler);
 
 export default videogameRouter;
