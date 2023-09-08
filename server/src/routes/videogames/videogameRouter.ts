@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+  deleteVideogameHandler,
   getByIdHandler,
   getVideogamesHandler,
   modifyVideogameHandler,
@@ -17,7 +18,10 @@ videogameRouter.get("/", getVideogamesHandler);
 // Route to create a videogame in Db.
 videogameRouter.post("/", postVideogameHandler);
 
-// Route to modify a videogame in db.
+// Route to modify a videogame in Db.
 videogameRouter.patch("/:id", modifyVideogameHandler);
+
+// Route to delete a videogame in Db.
+videogameRouter.delete("/:id", deleteVideogameHandler);
 
 export default videogameRouter;

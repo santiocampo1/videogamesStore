@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import {
   createVideogame,
+  deleteVideogame,
   getAllVideogames,
   getVideogameById,
   getVideogameByName,
@@ -87,15 +88,29 @@ export const modifyVideogameHandler = async (req: Request, res: Response) => {
       genres
     );
 
-    // if (!videogame) {
-    //   return res
-    //     .status(400)
-    //     .send(
-    //       `Videogame with ID ${id} was not found or does not exist in database.`
-    //     );
-    // }
+    if (!videogame) {
+      return res
+        .status(400)
+        .send(
+          `Videogame with ID ${id} was not found or does not exist in database.`
+        );
+    }
 
     res.status(200).json(videogame);
+  } catch (error) {
+    res.status(400).json((error as Error).message);
+  }
+};
+
+// Handler to delete a videogame.
+export const deleteVideogameHandler = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  try {
+    const deletedGame = await deleteVideogame(id);
+
+    res
+      .status(200)
+      .send(`Videogame with ID ${id} has been deleted succesfully.`);
   } catch (error) {
     res.status(400).json((error as Error).message);
   }

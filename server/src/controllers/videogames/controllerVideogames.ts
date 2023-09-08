@@ -1,7 +1,7 @@
 import axios from "axios";
 import dotenv from "dotenv";
 import { Op } from "sequelize";
-import { Videogame, Genre } from "../../db";
+import { Videogame, Genre, DisableVideogame } from "../../db";
 dotenv.config();
 const { API_KEY } = process.env;
 
@@ -216,4 +216,20 @@ export const modifyVideogame = async (
   });
 
   return foundVideogame;
+};
+
+// Controller to delete a videogame.
+export const deleteVideogame = async (id: any) => {
+  try {
+    const videogame = await Videogame.findByPk(id);
+    if (!videogame)
+      throw new Error(`Videogame with ID ${id} does not exist. Try again.`);
+
+    await DisableVideogame.create({ ...videogame.dataValues });
+
+    await videogame.destroy();
+    return videogame;
+  } catch (error) {
+    return (error as Error).message;
+  }
 };
