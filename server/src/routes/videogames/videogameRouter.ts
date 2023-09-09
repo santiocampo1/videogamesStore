@@ -5,7 +5,7 @@ import {
   getVideogamesHandler,
   modifyVideogameHandler,
   postVideogameHandler,
-} from "../../handlers/videogames/handlerVideogames";
+} from "../../handlers/Videogames/handlerVideogames";
 
 const videogameRouter = Router();
 

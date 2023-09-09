@@ -52,7 +52,7 @@ const userModel = (sequelize: Sequelize) => {
       },
 
       gender: {
-        type: DataTypes.ENUM("Male", "Female", "Other"),
+        type: DataTypes.STRING,
       },
 
       nationality: {

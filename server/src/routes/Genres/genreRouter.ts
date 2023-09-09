@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { getAllGenresHandler } from "../../handlers/videogames/handlerGenres";
+import { getAllGenresHandler } from "../../handlers/Genres/handlerGenres";
 
 const genreRouter = Router();
 

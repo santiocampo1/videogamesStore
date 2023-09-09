@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getAllGenres } from "../../controllers/videogames/controllerGenres";
+import { getAllGenres } from "../../controllers/Genres/controllerGenres";
 
 export const getAllGenresHandler = async (req: Request, res: Response) => {
   try {

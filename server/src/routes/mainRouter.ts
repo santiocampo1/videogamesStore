@@ -1,5 +1,5 @@
 import { Router } from "express";
-import videogameRouter from "./videogames/videogameRouter";
+import videogameRouter from "./Videogames/videogameRouter";
 import genreRouter from "./Genres/genreRouter";
 import usersRouter from "./Users/usersRouter";
 
