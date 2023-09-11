@@ -25,6 +25,7 @@ interface APIUser {
   creationDate: Date;
 }
 
+// Controller to get users from api and save them in Db.
 export const getUsers = async () => {
   try {
     const res = await axios("https://randomuser.me/api/?results=100");
@@ -35,8 +36,8 @@ export const getUsers = async () => {
         const name = `${user.name.first} ${user.name.last}`;
         const { email } = user;
         const { gender } = user;
-        const nationality = user.nationality;
-        const password = user.password;
+        const { nationality } = user;
+        const { password } = user;
         const image = user.picture.large;
         const available = true;
         const dni =
@@ -62,4 +63,22 @@ export const getUsers = async () => {
   } catch (error) {
     return (error as Error).message;
   }
+};
+
+// Controller to create an user.
+export const createUserDb = async (
+  email: string,
+  name: string,
+  image: string
+) => {
+  const [user, created] = await User.findOrCreate({
+    where: { email },
+    defaults: {
+      email,
+      name,
+      image,
+    },
+  });
+
+  return user;
 };
