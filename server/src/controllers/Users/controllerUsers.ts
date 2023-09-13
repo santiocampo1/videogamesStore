@@ -1,8 +1,9 @@
 import axios, { all } from "axios";
-import { User } from "../../db";
+import { DisableUser, User } from "../../db";
 
 //! Interfaces
 interface APIUser {
+  id: any;
   email: string;
   name: {
     first: string;
@@ -81,4 +82,66 @@ export const createUserDb = async (
   });
 
   return user;
+};
+
+// Controller to get an user by email.
+export const getByEmail = async (email: string) => {
+  try {
+    const foundUser = await User.findAll({ where: { email: email } });
+
+    if (!foundUser) {
+      throw new Error(`User with ${email} was not found. Try again.`);
+    }
+
+    return foundUser;
+  } catch (error) {
+    throw new Error((error as Error).message);
+  }
+};
+
+// Controller to get an user by ID.
+export const getById = async (id: any) => {
+  try {
+    const foundUser = await User.findByPk(id);
+
+    if (!foundUser)
+      throw new Error(`User with ID ${id} was not found. Try again.`);
+
+    return foundUser;
+  } catch (error) {
+    throw new Error((error as Error).message);
+  }
+};
+
+// Controller to update an user.
+export const updateUser = async (id: any, updatedData: any) => {
+  try {
+    const userToUpdate = await User.findByPk(id);
+
+    if (!userToUpdate) {
+      throw new Error(`User with ID ${id} does not exist. Try again.`);
+    }
+
+    await userToUpdate.update(updatedData);
+
+    return userToUpdate;
+  } catch (error) {
+    throw new Error((error as Error).message);
+  }
+};
+
+// Controller to delete an user.
+export const deleteUser = async (id: any) => {
+  try {
+    const user = await User.findByPk(id);
+
+    if (!user) throw new Error("User was not found. Try again.");
+
+    await DisableUser.create({ ...user.dataValues, available: false });
+    await user.destroy();
+
+    return user;
+  } catch (error) {
+    throw new Error((error as Error).message);
+  }
 };

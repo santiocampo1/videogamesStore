@@ -12,7 +12,7 @@ const userModel = (sequelize: Sequelize) => {
 
       email: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
 
       name: {
@@ -43,7 +43,7 @@ const userModel = (sequelize: Sequelize) => {
         type: DataTypes.STRING,
       },
 
-      image: {
+      picture: {
         type: DataTypes.STRING,
 
         validate: {
@@ -77,7 +77,7 @@ const userModel = (sequelize: Sequelize) => {
         defaultValue: DataTypes.NOW,
       },
     },
-    { freezeTableName: true, timestamps: false }
+    { timestamps: false }
   );
 };
 

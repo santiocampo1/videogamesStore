@@ -1,6 +1,6 @@
 import { DataTypes, Sequelize } from "sequelize";
 
-const disableUserModel = (sequelize: Sequelize) => {
+const userModel = (sequelize: Sequelize) => {
   return sequelize.define(
     "DisableUser",
     {
@@ -12,7 +12,7 @@ const disableUserModel = (sequelize: Sequelize) => {
 
       email: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
 
       name: {
@@ -43,7 +43,7 @@ const disableUserModel = (sequelize: Sequelize) => {
         type: DataTypes.STRING,
       },
 
-      image: {
+      picture: {
         type: DataTypes.STRING,
 
         validate: {
@@ -52,7 +52,7 @@ const disableUserModel = (sequelize: Sequelize) => {
       },
 
       gender: {
-        type: DataTypes.ENUM("Male", "Female", "Other"),
+        type: DataTypes.STRING,
       },
 
       nationality: {
@@ -77,8 +77,8 @@ const disableUserModel = (sequelize: Sequelize) => {
         defaultValue: DataTypes.NOW,
       },
     },
-    { freezeTableName: true, timestamps: false }
+    { timestamps: false }
   );
 };
 
-export default disableUserModel;
+export default userModel;
