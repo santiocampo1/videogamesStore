@@ -1,0 +1,77 @@
+@import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap");
+
+.container {
+  background-image: url("../../assets/backgroundLanding.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #e0e0e0;
+}
+
+h1 {
+  font-family: "Orbitron", sans-serif;
+  font-size: 4rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
+}
+
+.navButton {
+  font-family: "Orbitron", sans-serif;
+  background-color: #424242;
+  color: #e0e0e0;
+  padding: 10px 20px;
+  text-decoration: none;
+  border: 2px solid #616161;
+  border-radius: 5px;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9);
+  transition: all 0.3s ease-in-out;
+}
+
+.navButton:hover {
+  background-color: #616161;
+  transform: scale(1.1);
+  box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.9);
+  color: rgb(255, 0, 162);
+}
+
+.navButton:active {
+  transform: scale(1.05);
+  box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.9);
+}
+
+/* Phones */
+@media (max-width: 576px) {
+  h1 {
+    font-size: 2.5rem;
+  }
+
+  .navButton {
+    padding: 8px 15px;
+  }
+
+  .container {
+    background-position: left center;
+  }
+}
+
+/* Tablets */
+@media (min-width: 577px) and (max-width: 992px) {
+  h1 {
+    font-size: 3.5rem;
+  }
+
+  .navButton {
+    padding: 9px 18px;
+  }
+
+  .container {
+    background-position: left center;
+  }
+}
