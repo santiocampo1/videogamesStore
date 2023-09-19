@@ -36,6 +36,7 @@ const videogameModel = (sequelize: Sequelize) => {
 
       rating: {
         type: DataTypes.INTEGER,
+        defaultValue: 0,
       },
 
       genres: {

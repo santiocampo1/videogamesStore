@@ -10,7 +10,7 @@ function App() {
   const location = useLocation();
 
   return (
-    <div>
+    <div className="app-container">
       {location.pathname !== "/" && <NavBar />}
       <Routes>
         <Route path="/" element={<Landing />} />
