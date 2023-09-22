@@ -1,4 +1,5 @@
 import { useState } from "react";
+import styles from "./Create.module.css";
 
 const Create: React.FC = () => {
   const [input, setInput] = useState({
@@ -16,9 +17,14 @@ const Create: React.FC = () => {
     });
   };
 
+  const handleSubmit = (event: any) => {
+    event.preventDefault();
+    console.log(input);
+  };
+
   return (
-    <div>
-      <form action="">
+    <div className={styles.container}>
+      <form onSubmit={handleSubmit}>
         <div>
           <label>Name: </label>
           <input name="name" type="text" onChange={handleChange} />
@@ -40,7 +46,7 @@ const Create: React.FC = () => {
           <label>Genres: </label>
           <input name="genres" type="text" onChange={handleChange} />
         </div>
-        <input type="submit" name="submit" />
+        <input type="submit" value="Create Game" />
       </form>
     </div>
   );
