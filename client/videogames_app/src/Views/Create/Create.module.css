@@ -11,10 +11,21 @@
   color: #e0e0e0;
 }
 
+.error {
+  color: red;
+  margin-top: -10px;
+  margin-bottom: 10px;
+}
+
 label {
   display: block;
   margin-bottom: 5px;
   color: #fafafa;
+}
+
+input[type="submit"]:disabled {
+  background-color: #616161;
+  cursor: not-allowed;
 }
 
 input[type="text"] {

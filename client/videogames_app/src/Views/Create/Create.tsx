@@ -27,25 +27,46 @@ const Create: React.FC = () => {
   });
 
   const [errors, setErrors] = useState<Errors>({
-    name: "Name is required",
-    description: "Description is required",
-    platforms: "At least 1 platform is required",
+    name: "",
+    description: "",
+    platforms: "",
     image: "",
-    genres: "At least 1 genre is required",
+    genres: "",
   });
 
   const validate = (input: Input, name: keyof Input) => {
-    const errorMessages = {
-      name: "Name is required",
-      description: "Description is required",
-      platforms: "At least 1 platform is required",
-      image: "",
-      genres: "At least 1 genre is required",
-    };
+    let error = "";
+
+    switch (name) {
+      case "name":
+        error = /^[A-Za-z\s]+$/.test(input.name)
+          ? ""
+          : "Name can only contain letters";
+        break;
+      case "description":
+        error =
+          input.description.length >= 10 && input.description.length <= 165
+            ? ""
+            : "Description must be between 10 and 165 characters";
+        break;
+      case "platforms":
+        error =
+          input.platforms.length <= 150
+            ? ""
+            : "Platforms cannot exceed 150 characters";
+        break;
+      case "image":
+        error = /^(http|https):\/\/[^ "]+$/.test(input.image)
+          ? ""
+          : "Image must be a valid URL";
+        break;
+      case "genres":
+        break;
+    }
 
     setErrors({
       ...errors,
-      [name]: input[name] ? "" : errorMessages[name],
+      [name]: error,
     });
   };
 
@@ -69,34 +90,46 @@ const Create: React.FC = () => {
     event.preventDefault();
     console.log(input);
   };
+  const isFormValid = Object.values(errors).every((error) => error === "");
 
   return (
     <div className={styles.container}>
-      {/* {console.log(errors)} */}
-
       <form onSubmit={handleSubmit}>
         <div>
           <label>Name: </label>
           <input name="name" type="text" onChange={handleChange} />
+          {errors.name && <div className={styles.error}>{errors.name}</div>}
         </div>
+
         <div>
           <label>Description: </label>
           <input name="description" type="text" onChange={handleChange} />
+          {errors.description && (
+            <div className={styles.error}>{errors.description}</div>
+          )}
         </div>
+
         <div>
           <label>Platforms: </label>
           <input name="platforms" type="text" onChange={handleChange} />
+          {errors.platforms && (
+            <div className={styles.error}>{errors.platforms}</div>
+          )}
         </div>
+
         <div>
           <label>Image: </label>
           <input name="image" type="text" onChange={handleChange} />
+          {errors.image && <div className={styles.error}>{errors.image}</div>}
         </div>
 
         <div>
           <label>Genres: </label>
           <input name="genres" type="text" onChange={handleChange} />
+          {errors.genres && <div className={styles.error}>{errors.genres}</div>}
         </div>
-        <input type="submit" value="Create Game" />
+
+        <input type="submit" value="Create Game" disabled={!isFormValid} />
       </form>
     </div>
   );
