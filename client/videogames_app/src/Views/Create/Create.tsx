@@ -1,8 +1,24 @@
-import { useState } from "react";
+import { useState, ChangeEvent, FormEvent } from "react";
 import styles from "./Create.module.css";
 
+interface Input {
+  name: string;
+  description: string;
+  platforms: string;
+  image: string;
+  genres: string;
+}
+
+interface Errors {
+  name: string;
+  description: string;
+  platforms: string;
+  image: string;
+  genres: string;
+}
+
 const Create: React.FC = () => {
-  const [input, setInput] = useState({
+  const [input, setInput] = useState<Input>({
     name: "",
     description: "",
     platforms: "",
@@ -10,20 +26,54 @@ const Create: React.FC = () => {
     genres: "",
   });
 
-  const handleChange = (event: any) => {
-    setInput({
-      ...input,
-      [event.target.name]: event.target.value,
+  const [errors, setErrors] = useState<Errors>({
+    name: "Name is required",
+    description: "Description is required",
+    platforms: "At least 1 platform is required",
+    image: "",
+    genres: "At least 1 genre is required",
+  });
+
+  const validate = (input: Input, name: keyof Input) => {
+    const errorMessages = {
+      name: "Name is required",
+      description: "Description is required",
+      platforms: "At least 1 platform is required",
+      image: "",
+      genres: "At least 1 genre is required",
+    };
+
+    setErrors({
+      ...errors,
+      [name]: input[name] ? "" : errorMessages[name],
     });
   };
 
-  const handleSubmit = (event: any) => {
+  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setInput({
+      ...input,
+      [name]: value,
+    });
+
+    validate(
+      {
+        ...input,
+        [name]: value,
+      },
+      name as keyof Input
+    );
+  };
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log(input);
   };
 
   return (
     <div className={styles.container}>
+      {/* {console.log(errors)} */}
+
       <form onSubmit={handleSubmit}>
         <div>
           <label>Name: </label>
