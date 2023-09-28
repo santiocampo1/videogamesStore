@@ -1,4 +1,8 @@
 import { useState, ChangeEvent, FormEvent } from "react";
+import { useDispatch } from "react-redux";
+import { ThunkDispatch } from "redux-thunk";
+import { AppActions } from "../../Redux/Actions";
+import { postVideogame } from "../../Redux/Actions";
 import styles from "./Create.module.css";
 
 interface Input {
@@ -17,6 +21,8 @@ interface Errors {
   genres: string;
 }
 
+type AppDispatch = ThunkDispatch<RTCIceConnectionState, undefined, AppActions>;
+
 const Create: React.FC = () => {
   const [input, setInput] = useState<Input>({
     name: "",
@@ -33,6 +39,8 @@ const Create: React.FC = () => {
     image: "",
     genres: "",
   });
+
+  const dispatch: AppDispatch = useDispatch();
 
   const validate = (input: Input, name: keyof Input) => {
     let error = "";
@@ -88,7 +96,7 @@ const Create: React.FC = () => {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(input);
+    dispatch(postVideogame(input));
   };
   const isFormValid = Object.values(errors).every((error) => error === "");
 
