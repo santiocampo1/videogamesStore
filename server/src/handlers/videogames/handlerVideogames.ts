@@ -34,19 +34,12 @@ export const getVideogamesHandler = async (req: Request, res: Response) => {
 
 // Handler to create a videogame.
 export const postVideogameHandler = async (req: Request, res: Response) => {
-  const { name, description, platforms, image, releaseDate, rating, genres } =
-    req.body;
+  const { name, description, platforms, image, genres } = req.body;
+
+  console.log(req.body);
 
   try {
-    await createVideogame(
-      name,
-      description,
-      platforms,
-      image,
-      releaseDate,
-      rating,
-      genres
-    );
+    await createVideogame(name, description, platforms, image, genres);
     res.status(200).send("Videogame successfully created!");
   } catch (error) {
     res.status(400).json(error);

@@ -10,7 +10,7 @@ interface Input {
   description: string;
   platforms: string;
   image: string;
-  genres: string;
+  genres: string[];
 }
 
 interface Errors {
@@ -29,8 +29,10 @@ const Create: React.FC = () => {
     description: "",
     platforms: "",
     image: "",
-    genres: "",
+    genres: [],
   });
+
+  const [selectedGenres, setSelectedGenres] = useState<string[]>([]);
 
   const [errors, setErrors] = useState<Errors>({
     name: "",
@@ -94,10 +96,23 @@ const Create: React.FC = () => {
     );
   };
 
+  const handleGenreChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { value, checked } = event.target;
+    setSelectedGenres((prevSelectedGenres) => {
+      if (checked) {
+        return [...prevSelectedGenres, value];
+      } else {
+        return prevSelectedGenres.filter((genre) => genre !== value);
+      }
+    });
+  };
+
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    dispatch(postVideogame(input));
+    setInput((prevInput) => ({ ...prevInput, genres: selectedGenres }));
+    dispatch(postVideogame({ ...input, genres: selectedGenres }));
   };
+
   const isFormValid = Object.values(errors).every((error) => error === "");
 
   return (
@@ -133,7 +148,41 @@ const Create: React.FC = () => {
 
         <div>
           <label>Genres: </label>
-          <input name="genres" type="text" onChange={handleChange} />
+
+          <div className={styles.genresContainer}>
+            {[
+              "Action",
+              "Indie",
+              "Adventure",
+              "RPG",
+              "Strategy",
+              "Shooter",
+              "Casual",
+              "Simulation",
+              "Puzzle",
+              "Arcade",
+              "Platformer",
+              "Massively Multiplayer",
+              "Racing",
+              "Sports",
+              "Fighting",
+              "Family",
+              "Board Games",
+              "Educational",
+              "Card",
+            ].map((genre) => (
+              <div className={styles.genreItem} key={genre}>
+                <input
+                  className={styles.genreCheckbox}
+                  type="checkbox"
+                  name="genres"
+                  value={genre}
+                  onChange={handleGenreChange}
+                />
+                <label>{genre}</label>
+              </div>
+            ))}
+          </div>
           {errors.genres && <div className={styles.error}>{errors.genres}</div>}
         </div>
 

@@ -6,6 +6,7 @@ import mainRouter from "./routes/mainRouter";
 const app = express();
 
 // Middlewares
+app.use(express.json());
 app.use(
   cors({
     origin: "http://localhost:5173",
@@ -14,9 +15,7 @@ app.use(
     optionsSuccessStatus: 204,
   })
 );
-
 app.use(morgan("dev"));
-app.use(express.json());
 app.use(mainRouter);
 
 export default app;

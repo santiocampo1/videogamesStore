@@ -92,8 +92,6 @@ export const createVideogame = async (
   description: string,
   platforms: PlatformDetail[],
   image: string,
-  releaseDate: string,
-  rating: number,
   genres: Genre[]
 ) => {
   try {
@@ -104,8 +102,6 @@ export const createVideogame = async (
         description,
         platforms,
         image,
-        releaseDate,
-        rating,
       },
     });
 

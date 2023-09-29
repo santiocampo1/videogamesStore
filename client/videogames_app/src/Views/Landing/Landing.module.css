@@ -1,10 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap");
 
-body {
-  overflow-x: hidden;
-  overflow-y: hidden;
-}
-
 h1 {
   font-family: "Orbitron", sans-serif;
   font-size: 4rem;
@@ -14,6 +9,8 @@ h1 {
 }
 
 .container {
+  overflow-x: hidden;
+  overflow-y: hidden;
   background-image: url("../../assets/backgroundLanding.jpg");
   background-size: cover;
   background-position: center;

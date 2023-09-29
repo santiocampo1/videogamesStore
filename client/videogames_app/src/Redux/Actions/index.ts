@@ -10,7 +10,7 @@ interface VideogameInfo {
   description: string;
   platforms: string;
   image: string;
-  genres: string;
+  genres: string[];
 }
 
 interface PostVideogameAction {

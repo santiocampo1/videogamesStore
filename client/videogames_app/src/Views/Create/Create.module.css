@@ -17,6 +17,29 @@
   margin-bottom: 10px;
 }
 
+.genresContainer {
+  max-height: 200px;
+  overflow-y: auto;
+  margin-bottom: 20px;
+}
+
+.genreItem {
+  display: inline-block;
+  margin: 5px;
+  padding: 10px;
+  background-color: #424242;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.genreItem:hover {
+  background-color: #616161;
+}
+
+.genreCheckbox {
+  margin-right: 5px;
+}
+
 label {
   display: block;
   margin-bottom: 5px;
