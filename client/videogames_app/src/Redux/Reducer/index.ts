@@ -1,15 +1,23 @@
-interface State {
+import { GET_VIDEOGAMES } from "../Actions_types/actions_types";
+
+export interface RootState {
   allVideogames: any[];
 }
 
-let initialState: State = {
+let initialState: RootState = {
   allVideogames: [],
 };
 
-const rootReducer = (state: State = initialState, action: any): State => {
+const rootReducer = (
+  state: RootState = initialState,
+  action: any
+): RootState => {
   switch (action.type) {
-    // case value:
-    // break;
+    case GET_VIDEOGAMES:
+      return {
+        ...state,
+        allVideogames: action.payload,
+      };
 
     default:
       return state;

@@ -1,11 +1,12 @@
 import axios from "axios";
 import { Dispatch } from "redux";
-import { POST_VIDEOGAME } from "../Actions_types/actions_types";
+import { Action } from "redux";
+import { GET_VIDEOGAMES, POST_VIDEOGAME } from "../Actions_types/actions_types";
 
-type ThunkAction = (dispatch: Dispatch) => Promise<void>;
+type ThunkAction = (dispatch: Dispatch<Action<any>>) => Promise<any>;
 export type AppActions = PostVideogameAction;
 
-interface VideogameInfo {
+export interface VideogameInfo {
   name: string;
   description: string;
   platforms: string;
@@ -20,15 +21,28 @@ interface PostVideogameAction {
 
 // Actions
 export const postVideogame = (info: VideogameInfo): ThunkAction => {
-  return async function (dispatch: Dispatch): Promise<void> {
+  return async function (_dispatch: Dispatch): Promise<void> {
     try {
-      const response = await axios.post(
-        "http://localhost:3001/videogames/",
-        info
-      );
-      console.log(response);
+      await axios.post("http://localhost:3001/videogames/", info);
+      alert("Videogame has been created successfully");
     } catch (error) {
-      console.log(error);
+      alert((error as Error).message);
+    }
+  };
+};
+
+export const getVideogames = () => {
+  return async function (dispatch: Dispatch): Promise<any> {
+    try {
+      const response = await axios.get("http://localhost:3001/videogames/");
+      console.log(response);
+
+      return dispatch({
+        type: GET_VIDEOGAMES,
+        payload: response.data,
+      });
+    } catch (error) {
+      alert("Error! Videogames could not be required");
     }
   };
 };
