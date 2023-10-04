@@ -1,3 +1,5 @@
+import styles from "./Card.module.css";
+
 interface CardProps {
   name: string;
   description: string;
@@ -14,14 +16,14 @@ const Card: React.FC<CardProps> = ({
   genres,
 }) => {
   return (
-    <div>
+    <div className={styles.cardContainer}>
       <h3>{name}</h3>
+      <img src={image} alt={`${name} cover`} />
       <p>{description}</p>
       <p>{platforms}</p>
-      <img src={image} alt={`${name} cover`} />
-      <div>
+      <div className={styles.genresContainer}>
         {genres.map((genre, index) => (
-          <p key={index}>{genre}</p>
+          <span key={index}>{genre}</span>
         ))}
       </div>
     </div>

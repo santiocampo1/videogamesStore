@@ -1,0 +1,47 @@
+.cardContainer {
+  width: calc(25% - 15px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid transparent;
+  transition: transform 0.3s, border-color 0.3s;
+  overflow: hidden;
+  margin-bottom: 20px;
+  background-color: hsl(0, 0%, 0%);
+}
+
+.cardContainer:hover {
+  transform: scale(1.05);
+  border-color: #ff4500;
+}
+
+h3 {
+  margin-top: 10px;
+  text-align: center;
+  color: #948888;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+genresContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  justify-content: center;
+}
+
+/* Phones */
+@media (max-width: 576px) {
+  .cardContainer {
+    width: 100%;
+    margin: 0 auto;
+  }
+}
+
+/* Tablets */
+@media (min-width: 577px) and (max-width: 992px) {
+  .cardContainer {
+    width: calc(50% - 10px);
+  }
+}

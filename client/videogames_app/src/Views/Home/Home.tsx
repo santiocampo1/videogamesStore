@@ -12,15 +12,13 @@ const Home: React.FC = () => {
     useDispatch<ThunkDispatch<RootState, undefined, AnyAction>>();
   const allVideogames = useSelector((state: RootState) => state.allVideogames);
 
-  // const [state, setState] = useState({});
-
   useEffect(() => {
     dispatch(getVideogames());
   }, [dispatch]);
 
   return (
     <div className={styles.homeContainer}>
-      <h1>Home</h1>
+      <h1>Videogames Store</h1>
       <Cards allVideogames={allVideogames} />
     </div>
   );
