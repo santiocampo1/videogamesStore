@@ -7,25 +7,57 @@ const { API_KEY } = process.env;
 
 const getVideogamesApi = async () => {
   try {
-    const response = await axios(
+    let apiVideogames = [];
+    let dbVideogames = [];
+
+    let i = 0;
+    let videogameData = await axios.get(
       `https://api.rawg.io/api/games?key=${API_KEY}`
     );
+    while (i < 5) {
+      apiVideogames = apiVideogames.concat(videogameData.data.results);
+      videogameData = await axios.get(videogameData.data.next);
+      i++;
+    }
+    dbVideogames = await Videogame.findAll({
+      include: [
+        {
+          model: Genre,
+          attributes: ["name"],
+          through: {
+            attributes: [],
+          },
+        },
+      ],
+    });
+    dbVideogames = dbVideogames.map((game) => {
+      return {
+        id: game.id,
+        name: game.name,
+        platforms: game.platforms.split(", "),
+        genres: game.Genres.map((genre) => genre.name),
+        image: game.image,
+        releaseDate: game.releaseDate,
+        rating: game.rating,
+      };
+    });
 
-    const videogamesData = response.data.results.map((game) => ({
-      name: game.name,
-      description: game.description_raw || game.description,
-      platforms: game.platforms
-        ? game.platforms.map((platform) => platform.platform.name).join(", ")
-        : "",
-      image: game.background_image,
-      releaseDate: game.released,
-      rating: game.rating,
-      genres: game.genres.map((genre) => genre.name),
-    }));
-
-    return videogamesData;
+    apiVideogames = apiVideogames.map((game) => {
+      return {
+        id: game.id,
+        name: game.name,
+        platforms: game.platforms.map((platform) => platform.platform.name),
+        genres: game.genres.map((genre) => genre.name),
+        image: game.background_image,
+        releaseDate: game.released,
+        rating: game.rating,
+      };
+    });
+    console.log(apiVideogames.length);
+    const allVideogames = apiVideogames.concat(dbVideogames);
+    return allVideogames;
   } catch (error) {
-    return error;
+    return error.message;
   }
 };
 
