@@ -99,7 +99,7 @@ const createVideogame = async (name, description, platforms, image, genres) => {
       throw new Error("Videogame with that name already exists.");
     }
 
-    const genreInstances = await Genre.findAll({
+    let genreInstances = await Genre.findAll({
       where: {
         name: {
           [Op.in]: genres,
@@ -108,7 +108,20 @@ const createVideogame = async (name, description, platforms, image, genres) => {
     });
 
     if (genreInstances.length !== genres.length) {
-      throw new Error("One or more genres do not exist in the database.");
+      await getAllGenres();
+      genreInstances = await Genre.findAll({
+        where: {
+          name: {
+            [Op.in]: genres,
+          },
+        },
+      });
+
+      if (genreInstances.length !== genres.length) {
+        throw new Error(
+          "One or more genres are still missing from the database."
+        );
+      }
     }
 
     await createdGame.setGenres(genreInstances);
@@ -116,7 +129,6 @@ const createVideogame = async (name, description, platforms, image, genres) => {
     throw new Error(error.message);
   }
 };
-
 const getAllVideogames = async () => {
   try {
     const videogamesDb = await getVideogamesDb();

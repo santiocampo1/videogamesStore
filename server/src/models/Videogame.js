@@ -38,10 +38,6 @@ const videogameModel = (sequelize) => {
         type: DataTypes.INTEGER,
         defaultValue: 0,
       },
-
-      genres: {
-        type: DataTypes.ARRAY(DataTypes.STRING),
-      },
     },
     { timestamps: false }
   );
