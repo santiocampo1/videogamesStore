@@ -11,7 +11,7 @@ const Cards: React.FC<CardsProps> = ({ allVideogames }) => {
     <div className={styles.cardsContainer}>
       {allVideogames.map((videogame, index) => (
         <Card
-          key={index} // Siempre es una buena práctica agregar un key al mapear.
+          key={index}
           name={videogame.name}
           description={videogame.description}
           platforms={videogame.platforms}

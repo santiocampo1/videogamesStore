@@ -23,7 +23,9 @@ const Card: React.FC<CardProps> = ({
       <p>{platforms}</p>
       <div className={styles.genresContainer}>
         {genres.map((genre, index) => (
-          <span key={index}>{genre}</span>
+          <p className={styles.genre} key={index}>
+            {genre}
+          </p>
         ))}
       </div>
     </div>
