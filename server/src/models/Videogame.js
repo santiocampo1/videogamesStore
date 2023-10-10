@@ -1,6 +1,6 @@
-import { DataTypes, Sequelize } from "sequelize";
+const { DataTypes } = require("sequelize");
 
-const videogameModel = (sequelize: Sequelize) => {
+const videogameModel = (sequelize) => {
   sequelize.define(
     "Videogame",
     {
@@ -47,4 +47,4 @@ const videogameModel = (sequelize: Sequelize) => {
   );
 };
 
-export default videogameModel;
+module.exports = videogameModel;

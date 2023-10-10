@@ -1,6 +1,6 @@
-import { DataTypes, Sequelize } from "sequelize";
+const { DataTypes } = require("sequelize");
 
-const userModel = (sequelize: Sequelize) => {
+const userModel = (sequelize) => {
   return sequelize.define(
     "DisableUser",
     {
@@ -45,7 +45,6 @@ const userModel = (sequelize: Sequelize) => {
 
       picture: {
         type: DataTypes.STRING,
-
         validate: {
           isUrl: true,
         },
@@ -81,4 +80,4 @@ const userModel = (sequelize: Sequelize) => {
   );
 };
 
-export default userModel;
+module.exports = userModel;

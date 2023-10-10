@@ -1,56 +1,26 @@
-import axios from "axios";
-import dotenv from "dotenv";
-import { Op } from "sequelize";
-import { Videogame, Genre, DisableVideogame } from "../../db";
+const axios = require("axios");
+const dotenv = require("dotenv");
+const { Op } = require("sequelize");
+const { Videogame, Genre, DisableVideogame } = require("../../db");
 dotenv.config();
 const { API_KEY } = process.env;
 
-//! Interfaces
-interface PlatformDetail {
-  platform: {
-    name: string;
-  };
-}
-
-interface Genre {
-  id: any;
-  name: string;
-}
-
-interface Game {
-  id?: any;
-  name: string;
-  description_raw?: string;
-  description?: string;
-  platforms?: PlatformDetail[];
-  background_image: string;
-  released: string;
-  rating: number;
-  genres: Genre[];
-}
-
-//! Controllers
-// Controller to get the games from the API.
-export const getVideogamesApi = async () => {
+const getVideogamesApi = async () => {
   try {
     const response = await axios(
       `https://api.rawg.io/api/games?key=${API_KEY}`
     );
 
-    const videogamesData = response.data.results.map((game: Game) => ({
+    const videogamesData = response.data.results.map((game) => ({
       name: game.name,
       description: game.description_raw || game.description,
       platforms: game.platforms
-        ? game.platforms
-            .map((platform: PlatformDetail) => platform.platform.name)
-            .join(", ")
+        ? game.platforms.map((platform) => platform.platform.name).join(", ")
         : "",
       image: game.background_image,
       releaseDate: game.released,
       rating: game.rating,
-      genres: game.genres.map((genre) => {
-        return genre.name;
-      }),
+      genres: game.genres.map((genre) => genre.name),
     }));
 
     return videogamesData;
@@ -59,8 +29,7 @@ export const getVideogamesApi = async () => {
   }
 };
 
-// Controller to get the videogames from the Db.
-export const getVideogamesDb = async () => {
+const getVideogamesDb = async () => {
   const allVideogamesDb = await Videogame.findAll({
     include: {
       model: Genre,
@@ -68,32 +37,21 @@ export const getVideogamesDb = async () => {
     },
   });
 
-  const mapVideogameInfo = allVideogamesDb.map((videogame: Game) => {
-    return {
-      id: videogame.id,
-      name: videogame.name,
-      image: videogame.background_image,
-      description: videogame.description,
-      platforms: videogame.platforms,
-      released: videogame.released,
-      rating: videogame.rating,
-      genres: videogame.genres
-        ? videogame.genres.map((genre) => genre.name)
-        : [],
-    };
-  });
+  const mapVideogameInfo = allVideogamesDb.map((videogame) => ({
+    id: videogame.id,
+    name: videogame.name,
+    image: videogame.background_image,
+    description: videogame.description,
+    platforms: videogame.platforms,
+    released: videogame.released,
+    rating: videogame.rating,
+    genres: videogame.genres ? videogame.genres.map((genre) => genre.name) : [],
+  }));
 
   return mapVideogameInfo;
 };
 
-// Controller to create a videogame in Db.
-export const createVideogame = async (
-  name: string,
-  description: string,
-  platforms: PlatformDetail[],
-  image: string,
-  genres: Genre[]
-) => {
+const createVideogame = async (name, description, platforms, image, genres) => {
   try {
     const [createdGame, wasCreated] = await Videogame.findOrCreate({
       where: { name },
@@ -123,12 +81,11 @@ export const createVideogame = async (
 
     await createdGame.setGenres(genreInstances);
   } catch (error) {
-    throw new Error((error as Error).message);
+    throw new Error(error.message);
   }
 };
 
-// Controller to get all the videogames
-export const getAllVideogames = async () => {
+const getAllVideogames = async () => {
   try {
     const videogamesDb = await getVideogamesDb();
     const videogamesApi = await getVideogamesApi();
@@ -137,12 +94,11 @@ export const getAllVideogames = async () => {
 
     return combinedVideogames;
   } catch (error) {
-    return (error as Error).message;
+    return error.message;
   }
 };
 
-// Controller to get videogames by name.
-export const getVideogameByName = async (name: string) => {
+const getVideogameByName = async (name) => {
   try {
     const lowerName = name.toLowerCase();
     const videogamesApi = await getVideogamesApi();
@@ -154,7 +110,7 @@ export const getVideogameByName = async (name: string) => {
       },
     });
 
-    const videogameFoundByApi = videogamesApi.filter((game: Game) =>
+    const videogameFoundByApi = videogamesApi.filter((game) =>
       game.name.toLowerCase().includes(lowerName)
     );
     const allResults = [...videogamesDb, ...videogameFoundByApi];
@@ -169,8 +125,7 @@ export const getVideogameByName = async (name: string) => {
   }
 };
 
-// Controller to get Videogames by Id.
-export const getVideogameById = async (id: any) => {
+const getVideogameById = async (id) => {
   try {
     const foundVideogame = await Videogame.findByPk(id);
 
@@ -180,20 +135,19 @@ export const getVideogameById = async (id: any) => {
 
     return foundVideogame;
   } catch (error) {
-    throw new Error((error as Error).message);
+    throw new Error(error.message);
   }
 };
 
-// Controller to modify a Videogame by Id.
-export const modifyVideogame = async (
-  id: any,
-  name: string,
-  description: string,
-  platforms: PlatformDetail[],
-  image: string,
-  releaseDate: string,
-  rating: number,
-  genres: Genre[]
+const modifyVideogame = async (
+  id,
+  name,
+  description,
+  platforms,
+  image,
+  releaseDate,
+  rating,
+  genres
 ) => {
   const foundVideogame = await Videogame.findByPk(id);
 
@@ -214,8 +168,7 @@ export const modifyVideogame = async (
   return foundVideogame;
 };
 
-// Controller to delete a videogame.
-export const deleteVideogame = async (id: any) => {
+const deleteVideogame = async (id) => {
   try {
     const videogame = await Videogame.findByPk(id);
     if (!videogame)
@@ -226,6 +179,17 @@ export const deleteVideogame = async (id: any) => {
     await videogame.destroy();
     return videogame;
   } catch (error) {
-    return (error as Error).message;
+    return error.message;
   }
+};
+
+module.exports = {
+  getVideogamesApi,
+  getVideogamesDb,
+  createVideogame,
+  getAllVideogames,
+  getVideogameByName,
+  getVideogameById,
+  modifyVideogame,
+  deleteVideogame,
 };

@@ -1,20 +1,19 @@
-import { Request, Response } from "express";
-import {
+const {
   createVideogame,
   deleteVideogame,
   getAllVideogames,
   getVideogameById,
   getVideogameByName,
   modifyVideogame,
-} from "../../controllers/videogames/controllerVideogames";
+} = require("../../controllers/videogames/controllerVideogames");
 
-// Handler to get all the videogames.
-export const getVideogamesHandler = async (req: Request, res: Response) => {
+//Handler to get all the videogames.
+const getVideogamesHandler = async (req, res) => {
   const { name } = req.query;
 
   try {
     if (name && typeof name === "string") {
-      const foundVideogame: any = await getVideogameByName(name);
+      const foundVideogame = await getVideogameByName(name);
 
       if (foundVideogame.length === 0) {
         return res
@@ -28,12 +27,12 @@ export const getVideogamesHandler = async (req: Request, res: Response) => {
     const videogames = await getAllVideogames();
     res.status(200).json(videogames);
   } catch (error) {
-    res.status(500).json((error as Error).message);
+    res.status(500).json(error.message);
   }
 };
 
-// Handler to create a videogame.
-export const postVideogameHandler = async (req: Request, res: Response) => {
+//Handler to create a videogame.
+const postVideogameHandler = async (req, res) => {
   const { name, description, platforms, image, genres } = req.body;
 
   console.log(req.body);
@@ -46,8 +45,8 @@ export const postVideogameHandler = async (req: Request, res: Response) => {
   }
 };
 
-// Handler to get Videogame by Id.
-export const getByIdHandler = async (req: Request, res: Response) => {
+//Handler to get videogame by ID.
+const getByIdHandler = async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -59,12 +58,12 @@ export const getByIdHandler = async (req: Request, res: Response) => {
 
     res.status(200).json(videogameById);
   } catch (error) {
-    res.status(400).json((error as Error).message);
+    res.status(400).json(error.message);
   }
 };
 
-// Handler to modify a Videogame by ID.
-export const modifyVideogameHandler = async (req: Request, res: Response) => {
+//Handler to modify a videogame by ID.
+const modifyVideogameHandler = async (req, res) => {
   const { id } = req.params;
   const { name, description, platforms, image, releaseDate, rating, genres } =
     req.body;
@@ -91,12 +90,12 @@ export const modifyVideogameHandler = async (req: Request, res: Response) => {
 
     res.status(200).json(videogame);
   } catch (error) {
-    res.status(400).json((error as Error).message);
+    res.status(400).json(error.message);
   }
 };
 
-// Handler to delete a videogame.
-export const deleteVideogameHandler = async (req: Request, res: Response) => {
+//Handler to delete a videogame by ID.
+const deleteVideogameHandler = async (req, res) => {
   const { id } = req.params;
   try {
     const deletedGame = await deleteVideogame(id);
@@ -105,6 +104,14 @@ export const deleteVideogameHandler = async (req: Request, res: Response) => {
       .status(200)
       .send(`Videogame with ID ${id} has been deleted succesfully.`);
   } catch (error) {
-    res.status(400).json((error as Error).message);
+    res.status(400).json(error.message);
   }
+};
+
+module.exports = {
+  getVideogamesHandler,
+  postVideogameHandler,
+  getByIdHandler,
+  modifyVideogameHandler,
+  deleteVideogameHandler,
 };

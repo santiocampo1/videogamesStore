@@ -1,7 +1,7 @@
-import express from "express";
-import morgan from "morgan";
-import cors from "cors";
-import mainRouter from "./routes/mainRouter";
+const express = require("express");
+const morgan = require("morgan");
+const cors = require("cors");
+const mainRouter = require("./routes/mainRouter");
 
 const app = express();
 
@@ -18,4 +18,4 @@ app.use(
 app.use(morgan("dev"));
 app.use(mainRouter);
 
-export default app;
+module.exports = app;

@@ -1,12 +1,12 @@
-import { Router } from "express";
-import {
+const { Router } = require("express");
+const {
   createUserHandler,
   deleteUserHandler,
   getAllUsersHandler,
   getUserByEmailHandler,
   getUserByIdHandler,
   updateUserHandler,
-} from "../../handlers/Users/handlerUsers";
+} = require("../../handlers/Users/handlerUsers");
 
 const usersRouter = Router();
 
@@ -28,4 +28,4 @@ usersRouter.get("/:id", getUserByIdHandler);
 // Route to get the users.
 usersRouter.get("/", getAllUsersHandler);
 
-export default usersRouter;
+module.exports = usersRouter;

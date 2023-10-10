@@ -1,44 +1,16 @@
-import axios, { all } from "axios";
-import { DisableUser, User } from "../../db";
-
-//! Interfaces
-interface APIUser {
-  id: any;
-  email: string;
-  name: {
-    first: string;
-    last: string;
-  };
-  gender: string;
-  nationality: string;
-  password: string;
-  picture: {
-    large: string;
-    medium: string;
-    thumbnail: string;
-  };
-  dni: number;
-  available: boolean;
-  aboutMe: string;
-  socialNetwork: string[];
-  reviews: number;
-  reviewsCount: number;
-  creationDate: Date;
-}
+const axios = require("axios");
+const { DisableUser, User } = require("../../db");
 
 // Controller to get users from api and save them in Db.
-export const getUsers = async () => {
+const getUsers = async () => {
   try {
     const res = await axios("https://randomuser.me/api/?results=100");
     const usersData = res.data.results;
 
     const allUsers = await Promise.all(
-      usersData.map(async (user: APIUser) => {
+      usersData.map(async (user) => {
         const name = `${user.name.first} ${user.name.last}`;
-        const { email } = user;
-        const { gender } = user;
-        const { nationality } = user;
-        const { password } = user;
+        const { email, gender, nationality, password } = user;
         const image = user.picture.large;
         const available = true;
         const dni =
@@ -62,16 +34,12 @@ export const getUsers = async () => {
 
     return allUsers;
   } catch (error) {
-    return (error as Error).message;
+    return error.message;
   }
 };
 
 // Controller to create an user.
-export const createUserDb = async (
-  email: string,
-  name: string,
-  image: string
-) => {
+const createUserDb = async (email, name, image) => {
   const [user, created] = await User.findOrCreate({
     where: { email },
     defaults: {
@@ -85,7 +53,7 @@ export const createUserDb = async (
 };
 
 // Controller to get an user by email.
-export const getByEmail = async (email: string) => {
+const getByEmail = async (email) => {
   try {
     const foundUser = await User.findAll({ where: { email: email } });
 
@@ -95,26 +63,27 @@ export const getByEmail = async (email: string) => {
 
     return foundUser;
   } catch (error) {
-    throw new Error((error as Error).message);
+    throw new Error(error.message);
   }
 };
 
 // Controller to get an user by ID.
-export const getById = async (id: any) => {
+const getById = async (id) => {
   try {
     const foundUser = await User.findByPk(id);
 
-    if (!foundUser)
+    if (!foundUser) {
       throw new Error(`User with ID ${id} was not found. Try again.`);
+    }
 
     return foundUser;
   } catch (error) {
-    throw new Error((error as Error).message);
+    throw new Error(error.message);
   }
 };
 
 // Controller to update an user.
-export const updateUser = async (id: any, updatedData: any) => {
+const updateUser = async (id, updatedData) => {
   try {
     const userToUpdate = await User.findByPk(id);
 
@@ -126,12 +95,12 @@ export const updateUser = async (id: any, updatedData: any) => {
 
     return userToUpdate;
   } catch (error) {
-    throw new Error((error as Error).message);
+    throw new Error(error.message);
   }
 };
 
 // Controller to delete an user.
-export const deleteUser = async (id: any) => {
+const deleteUser = async (id) => {
   try {
     const user = await User.findByPk(id);
 
@@ -142,6 +111,15 @@ export const deleteUser = async (id: any) => {
 
     return user;
   } catch (error) {
-    throw new Error((error as Error).message);
+    throw new Error(error.message);
   }
+};
+
+module.exports = {
+  getUsers,
+  createUserDb,
+  getByEmail,
+  getById,
+  updateUser,
+  deleteUser,
 };

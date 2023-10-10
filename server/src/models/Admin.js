@@ -1,6 +1,6 @@
-import { DataTypes, Sequelize } from "sequelize";
+const { DataTypes, Sequelize } = require("sequelize");
 
-const adminModel = (sequelize: Sequelize) => {
+const adminModel = (sequelize) => {
   return sequelize.define(
     "Admin",
     {
@@ -24,4 +24,4 @@ const adminModel = (sequelize: Sequelize) => {
   );
 };
 
-export default adminModel;
+module.exports = adminModel;

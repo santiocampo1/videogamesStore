@@ -1,11 +1,11 @@
-import { Router } from "express";
-import {
+const { Router } = require("express");
+const {
   deleteVideogameHandler,
   getByIdHandler,
   getVideogamesHandler,
   modifyVideogameHandler,
   postVideogameHandler,
-} from "../../handlers/Videogames/handlerVideogames";
+} = require("../../handlers/Videogames/handlerVideogames");
 
 const videogameRouter = Router();
 
@@ -24,4 +24,4 @@ videogameRouter.patch("/:id", modifyVideogameHandler);
 // Route to delete a videogame in Db.
 videogameRouter.delete("/:id", deleteVideogameHandler);
 
-export default videogameRouter;
+module.exports = videogameRouter;

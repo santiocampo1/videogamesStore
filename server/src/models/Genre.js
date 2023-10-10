@@ -1,6 +1,6 @@
-import { DataTypes, Sequelize } from "sequelize";
+const { DataTypes } = require("sequelize");
 
-const genreModel = (sequelize: Sequelize) => {
+const genreModel = (sequelize) => {
   sequelize.define(
     "Genre",
     {
@@ -18,4 +18,4 @@ const genreModel = (sequelize: Sequelize) => {
   );
 };
 
-export default genreModel;
+module.exports = genreModel;

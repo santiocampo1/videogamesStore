@@ -1,7 +1,7 @@
-import { Sequelize } from "sequelize";
-import fs from "fs";
-import path from "path";
-import dotenv from "dotenv";
+const Sequelize = require("sequelize");
+const fs = require("fs");
+const path = require("path");
+const dotenv = require("dotenv");
 
 dotenv.config();
 
@@ -15,26 +15,26 @@ const sequelize = new Sequelize(
 );
 
 const basename = path.basename(__filename);
-const modelDefiners: any[] = [];
+const modelDefiners = [];
 
 fs.readdirSync(path.join(__dirname, "/models"))
   .filter(
-    (file: string) =>
-      file.indexOf(".") !== 0 && file !== basename && file.slice(-3) === ".ts"
+    (file) =>
+      file.indexOf(".") !== 0 && file !== basename && file.slice(-3) === ".js"
   )
-  .forEach((file: string) => {
-    modelDefiners.push(require(path.join(__dirname, "/models", file)).default);
+  .forEach((file) => {
+    modelDefiners.push(require(path.join(__dirname, "/models", file)));
   });
 
-modelDefiners.forEach((model: any) => model(sequelize));
-const modifiedModels: { [key: string]: any } = {};
+modelDefiners.forEach((model) => model(sequelize));
+const modifiedModels = {};
 let entries = Object.entries(sequelize.models);
-entries.forEach((entry: any[]) => {
+entries.forEach((entry) => {
   const key = entry[0][0].toUpperCase() + entry[0].slice(1);
   modifiedModels[key] = entry[1];
 });
 
-export const {
+const {
   Videogame,
   Genre,
   User,
@@ -42,7 +42,7 @@ export const {
   DisableUser,
   DisableVideogame,
   VideogameFav,
-} = modifiedModels;
+} = sequelize.models;
 
 // Relations
 Videogame.belongsToMany(Genre, { through: "VideogameGenre" });
@@ -54,5 +54,7 @@ VideogameFav.belongsToMany(User, { through: "UserSelectVideogameAsFav" });
 User.belongsToMany(Videogame, { through: "UserVideogame" });
 Videogame.belongsToMany(User, { through: "UserVideogame" });
 
-export const models = modifiedModels;
-export const conn = sequelize;
+module.exports = {
+  ...sequelize.models,
+  conn: sequelize,
+};

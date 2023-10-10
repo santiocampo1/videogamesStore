@@ -1,26 +1,24 @@
-import { Request, Response } from "express";
-import {
+const {
   createUserDb,
   deleteUser,
   getByEmail,
   getById,
   getUsers,
   updateUser,
-} from "../../controllers/Users/controllerUsers";
+} = require("../../controllers/Users/controllerUsers");
 
-// Handler to get all the users.
-export const getAllUsersHandler = async (req: Request, res: Response) => {
+//Handler to get all users
+const getAllUsersHandler = async (req, res) => {
   try {
     const allUsers = await getUsers();
-
     res.status(200).json(allUsers);
   } catch (error) {
-    res.status(400).json((error as Error).message);
+    res.status(400).json(error.message);
   }
 };
 
-// Handler to create an user.
-export const createUserHandler = async (req: Request, res: Response) => {
+//Handler to create an user
+const createUserHandler = async (req, res) => {
   const { name, email, image } = req.body;
 
   try {
@@ -29,40 +27,38 @@ export const createUserHandler = async (req: Request, res: Response) => {
     }
 
     const registeredUser = await createUserDb(email, name, image);
-
     res.status(200).json(registeredUser);
   } catch (error) {
-    res.status(400).json((error as Error).message);
+    res.status(400).json(error.message);
   }
 };
 
-// Handler to get user by email.
-export const getUserByEmailHandler = async (req: Request, res: Response) => {
+//Handler to get user by email
+const getUserByEmailHandler = async (req, res) => {
   const { email } = req.params;
 
   try {
     const userByEmail = await getByEmail(email);
-
     res.status(200).json(userByEmail);
   } catch (error) {
-    res.status(400).json((error as Error).message);
+    res.status(400).json(error.message);
   }
 };
 
-// Handler to get user by ID.
-export const getUserByIdHandler = async (req: Request, res: Response) => {
+//Handler to get user by ID
+const getUserByIdHandler = async (req, res) => {
   const { id } = req.params;
 
   try {
     const userById = await getById(id);
     res.status(200).json(userById);
   } catch (error) {
-    res.status(400).json((error as Error).message);
+    res.status(400).json(error.message);
   }
 };
 
-// Handler to update an user.
-export const updateUserHandler = async (req: Request, res: Response) => {
+//Handler to update user
+const updateUserHandler = async (req, res) => {
   const { id } = req.params;
   const {
     email,
@@ -99,15 +95,15 @@ export const updateUserHandler = async (req: Request, res: Response) => {
       };
 
       await updateUser(id, updatedData);
-
       res.status(200).send(`User ${id} has been successfully updated.`);
     }
   } catch (error) {
-    res.status(400).json((error as Error).message);
+    res.status(400).json(error.message);
   }
 };
 
-export const deleteUserHandler = async (req: Request, res: Response) => {
+//Handler to delete user
+const deleteUserHandler = async (req, res) => {
   const { id } = req.params;
 
   try {
@@ -119,6 +115,15 @@ export const deleteUserHandler = async (req: Request, res: Response) => {
 
     res.status(200).send(`User with ID ${id} has been deleted.`);
   } catch (error) {
-    res.status(400).json((error as Error).message);
+    res.status(400).json(error.message);
   }
+};
+
+module.exports = {
+  getAllUsersHandler,
+  createUserHandler,
+  getUserByEmailHandler,
+  getUserByIdHandler,
+  updateUserHandler,
+  deleteUserHandler,
 };
