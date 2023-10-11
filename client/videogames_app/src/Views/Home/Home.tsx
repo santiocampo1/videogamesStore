@@ -1,6 +1,7 @@
 import styles from "./Home.module.css";
 import Cards from "../../Components/Cards/Cards";
 import Pagination from "../../Components/Pagination/Pagination";
+import Loading from "../../Components/Loading/Loading";
 import { useEffect, useState } from "react";
 import { AnyAction } from "redux";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,10 +22,12 @@ const Home: React.FC = () => {
   const videogamesToShow = videogamesOrdered.length
     ? videogamesOrdered
     : allVideogames;
+
   const [currentVideogames, setCurrentVideogames] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    dispatch(getVideogames());
+    dispatch(getVideogames()).then(() => setLoading(false));
   }, [dispatch]);
 
   useEffect(() => {
@@ -35,6 +38,8 @@ const Home: React.FC = () => {
   const onChangeOrder = (event: any) => {
     dispatch(filterByNameVideogames(event.target.value));
   };
+
+  if (loading) return <Loading />;
 
   return (
     <div className={styles.homeContainer}>
