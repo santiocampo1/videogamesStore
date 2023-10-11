@@ -6,7 +6,7 @@ const NavBar: React.FC = () => {
   return (
     <div className={styles.navContainer}>
       <div>
-        <NavLink to={"/"}>
+        <NavLink to={"/"} className={styles.logoLink}>
           <img src={logoNavBar} alt="videogameLogo" />
         </NavLink>
       </div>

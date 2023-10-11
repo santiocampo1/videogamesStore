@@ -1,24 +1,75 @@
 .homeContainer {
   padding: 20px;
   text-align: center;
+  background-color: #1a1a1a; /* Fondo oscuro */
+  min-height: 100vh; /* Aseguramos que ocupe toda la altura */
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 40px;
 }
 
 h1 {
+  font-size: 3rem;
+  color: #f9a826; /* Color ámbar */
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.6);
   margin-bottom: 20px;
-  font-size: 2rem;
-  color: rgb(224, 220, 220);
 }
 
-/* Phones */
+.sortContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+label {
+  color: #f9a826;
+  font-size: 1.2rem;
+}
+
+select {
+  padding: 8px;
+  border-radius: 4px;
+  background-color: #2a2a2a;
+  color: #f9a826;
+  border: 1px solid #f9a826;
+  font-size: 1rem;
+  cursor: pointer;
+  outline: none;
+  transition: all 0.3s;
+}
+
+select:hover,
+select:focus {
+  background-color: #f9a826;
+  color: #1a1a1a;
+}
+
+/* Responsive */
 @media (max-width: 576px) {
-  h1 {
-    font-size: 1.5rem;
+  .navContainer {
+    justify-content: center;
+  }
+
+  .navContainer img {
+    height: 45px;
+  }
+
+  .navContainer a {
+    margin: 8px 12px;
+    font-size: 1em;
   }
 }
 
-/* Tablets */
 @media (min-width: 577px) and (max-width: 992px) {
-  h1 {
-    font-size: 1.8rem;
+  .navContainer img {
+    height: 50px;
+  }
+
+  .navContainer a {
+    margin: 8px 15px;
   }
 }

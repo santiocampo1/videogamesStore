@@ -3,69 +3,89 @@
   justify-content: space-between;
   align-items: center;
   padding: 10px 5%;
-  background: linear-gradient(to right, #2c3e50, #11171e);
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  background: #1a1a1a;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
   font-family: "Arial", sans-serif;
   flex-wrap: wrap;
+  position: relative;
+  z-index: 100;
 }
 
 .navContainer img {
-  height: 50px;
+  height: 60px;
   width: auto;
+  transition: transform 0.2s ease;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.navContainer img:hover {
+  transform: scale(1.1);
 }
 
 .navContainer a {
-  margin: 0 15px;
-  color: #ecf0f1;
+  margin: 0 20px;
+  color: #f9a826;
   text-decoration: none;
-  transition: color 0.3s ease;
+  font-weight: 500;
+  font-size: 1.1rem;
   position: relative;
+  transition: all 0.3s ease;
+  padding: 5px 0;
 }
 
 .navContainer a:hover {
-  color: #bdc3c7;
+  color: #e67e22;
 }
 
 .navContainer a::before {
   content: "";
   position: absolute;
-  width: 0;
+  width: 100%;
   height: 2px;
   bottom: 0;
   left: 0;
-  background-color: #bdc3c7;
-  visibility: hidden;
-  transition: all 0.3s ease-in-out;
+  background-color: #f9a826;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.3s ease;
 }
 
 .navContainer a:hover::before {
-  visibility: visible;
-  width: 100%;
+  transform: scaleX(1);
+  transform-origin: left;
 }
 
-/* Phones */
+.logoLink {
+  display: inline-block;
+}
+
+.logoLink:hover::before {
+  content: none;
+}
+
+/* Responsive */
 @media (max-width: 576px) {
   .navContainer {
     justify-content: center;
   }
 
   .navContainer img {
-    height: 40px;
-  }
-
-  .navContainer a {
-    margin: 8px 10px;
-    font-size: 0.9em;
-  }
-}
-
-/* Tablets */
-@media (min-width: 577px) and (max-width: 992px) {
-  .navContainer img {
     height: 45px;
   }
 
   .navContainer a {
     margin: 8px 12px;
+    font-size: 1em;
+  }
+}
+
+@media (min-width: 577px) and (max-width: 992px) {
+  .navContainer img {
+    height: 50px;
+  }
+
+  .navContainer a {
+    margin: 8px 15px;
   }
 }
