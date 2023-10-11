@@ -1,7 +1,11 @@
 import axios from "axios";
 import { Dispatch } from "redux";
 import { Action } from "redux";
-import { GET_VIDEOGAMES, POST_VIDEOGAME } from "../Actions_types/actions_types";
+import {
+  GET_VIDEOGAMES,
+  ORDERS,
+  POST_VIDEOGAME,
+} from "../Actions_types/actions_types";
 
 type ThunkAction = (dispatch: Dispatch<Action<any>>) => Promise<any>;
 export type AppActions = PostVideogameAction;
@@ -44,5 +48,14 @@ export const getVideogames = () => {
     } catch (error) {
       alert("Error! Videogames could not be required");
     }
+  };
+};
+
+export const filterByNameVideogames = (order: string) => {
+  return function (dispatch: Dispatch) {
+    return dispatch({
+      type: ORDERS,
+      payload: order,
+    });
   };
 };
