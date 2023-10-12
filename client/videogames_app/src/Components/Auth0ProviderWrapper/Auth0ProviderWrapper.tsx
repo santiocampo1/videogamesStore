@@ -7,7 +7,7 @@ type Auth0ProviderWrapperProps = {
 const providerOptions: any = {
   domain: "dev-4qxio4kiocs8hwft.us.auth0.com",
   clientId: "AajztMNTEmw5K1VWon5twtzw0L1pDn0S",
-  redirectUri: window.location.origin,
+  redirectUri: "http://localhost:5173/callback",
 };
 
 const Auth0ProviderWrapper: React.FC<Auth0ProviderWrapperProps> = ({
