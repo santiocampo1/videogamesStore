@@ -4,14 +4,16 @@ import Pagination from "../../Components/Pagination/Pagination";
 import Loading from "../../Components/Loading/Loading";
 import { useAuth0 } from "@auth0/auth0-react";
 import { useEffect, useState } from "react";
-import { AnyAction } from "redux";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { AnyAction } from "redux";
 import { ThunkDispatch } from "redux-thunk";
 import { getVideogames, filterByNameVideogames } from "../../Redux/Actions";
 import { RootState } from "../../Redux/Reducer";
 
 const Home: React.FC = () => {
   const { user, isAuthenticated } = useAuth0();
+  const navigate = useNavigate();
 
   const dispatch =
     useDispatch<ThunkDispatch<RootState, undefined, AnyAction>>();
@@ -44,37 +46,44 @@ const Home: React.FC = () => {
 
   if (loading) return <Loading />;
 
-  return (
-    isAuthenticated && (
-      <div className={styles.homeContainer}>
-        <div className={styles.header}>
-          <h1>Videogames Store</h1>
-          {/* Test */}
-          <div>
-            <img src={user?.picture} alt={user?.name} />
-            <h2>{user?.name}</h2>
-            <p>{user?.email}</p>
+  return isAuthenticated ? (
+    <>
+      {loading && <Loading />}
+      {!loading && (
+        <div className={styles.homeContainer}>
+          <div className={styles.header}>
+            <h1>Videogames Store</h1>
+            <div>
+              <img src={user?.picture} alt={user?.name} />
+              <h2>{user?.name}</h2>
+              <p>{user?.email}</p>
+            </div>
+            <div className={styles.sortContainer}>
+              <label>Order by Name:</label>
+              <select onChange={onChangeOrder} name="" id="">
+                <option defaultChecked value="default">
+                  -
+                </option>
+                <option value="asc">A-Z</option>
+                <option value="des">Z-A</option>
+              </select>
+            </div>
           </div>
-          {/* Test */}
-          <div className={styles.sortContainer}>
-            <label>Order by Name:</label>
-            <select onChange={onChangeOrder} name="" id="">
-              <option defaultChecked value="default">
-                -
-              </option>
-              <option value="asc">A-Z</option>
-              <option value="des">Z-A</option>
-            </select>
-          </div>
+          <Cards allVideogames={currentVideogames} />
+          <Pagination
+            key={videogamesToShow.length}
+            items={videogamesToShow}
+            onPageChange={setCurrentVideogames}
+          />
         </div>
-        <Cards allVideogames={currentVideogames} />
-        <Pagination
-          key={videogamesToShow.length}
-          items={videogamesToShow}
-          onPageChange={setCurrentVideogames}
-        />
-      </div>
-    )
+      )}
+    </>
+  ) : (
+    (() => {
+      alert("Debes iniciar sesión para acceder a esta página.");
+      navigate("/");
+      return null;
+    })()
   );
 };
 
