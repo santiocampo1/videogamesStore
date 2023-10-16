@@ -8,7 +8,11 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { AnyAction } from "redux";
 import { ThunkDispatch } from "redux-thunk";
-import { getVideogames, filterByNameVideogames } from "../../Redux/Actions";
+import {
+  getVideogames,
+  filterByNameVideogames,
+  registerUser,
+} from "../../Redux/Actions";
 import { RootState } from "../../Redux/Reducer";
 
 const Home: React.FC = () => {
@@ -39,6 +43,18 @@ const Home: React.FC = () => {
     const firstPageVideogames = videogamesToShow.slice(0, ITEMS_PER_PAGE);
     setCurrentVideogames(firstPageVideogames);
   }, [videogamesToShow]);
+
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      dispatch(
+        registerUser({
+          name: user.name,
+          email: user.email,
+          picture: user.picture,
+        })
+      );
+    }
+  }, [isAuthenticated, user, dispatch]);
 
   const onChangeOrder = (event: any) => {
     dispatch(filterByNameVideogames(event.target.value));

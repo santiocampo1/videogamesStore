@@ -5,6 +5,8 @@ import {
   GET_VIDEOGAMES,
   ORDERS,
   POST_VIDEOGAME,
+  REGISTER_USER_SUCCESS,
+  REGISTER_USER_ERROR,
 } from "../Actions_types/actions_types";
 
 type ThunkAction = (dispatch: Dispatch<Action<any>>) => Promise<any>;
@@ -24,6 +26,39 @@ interface PostVideogameAction {
 }
 
 // Actions
+
+export const registerUser = (userData: {
+  name: any;
+  email: any;
+  picture: any;
+}): ThunkAction => {
+  return async function (dispatch: Dispatch): Promise<void> {
+    try {
+      const response = await axios.post(
+        "http://localhost:3001/users/register",
+        userData
+      );
+
+      if (response.status === 201) {
+        dispatch({
+          type: REGISTER_USER_SUCCESS,
+          payload: response.data,
+        });
+      } else {
+        dispatch({
+          type: REGISTER_USER_ERROR,
+          payload: "Error registering user",
+        });
+      }
+    } catch (error) {
+      dispatch({
+        type: REGISTER_USER_ERROR,
+        payload: (error as Error).message,
+      });
+    }
+  };
+};
+
 export const postVideogame = (info: VideogameInfo): ThunkAction => {
   return async function (_dispatch: Dispatch): Promise<void> {
     try {

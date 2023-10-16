@@ -1,13 +1,22 @@
-import { GET_VIDEOGAMES, ORDERS } from "../Actions_types/actions_types";
+import {
+  GET_VIDEOGAMES,
+  ORDERS,
+  REGISTER_USER_ERROR,
+  REGISTER_USER_SUCCESS,
+} from "../Actions_types/actions_types";
 
 export interface RootState {
   allVideogames: any[];
   videogamesOrdered: any[];
+  user: null;
+  error: null;
 }
 
 let initialState: RootState = {
   allVideogames: [],
   videogamesOrdered: [],
+  user: null,
+  error: null,
 };
 
 const rootReducer = (
@@ -49,6 +58,18 @@ const rootReducer = (
       } else {
         return state;
       }
+
+    case REGISTER_USER_SUCCESS:
+      return {
+        ...state,
+        user: action.payload,
+      };
+
+    case REGISTER_USER_ERROR:
+      return {
+        ...state,
+        error: action.payload,
+      };
 
     default:
       return state;
