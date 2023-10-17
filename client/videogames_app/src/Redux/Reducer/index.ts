@@ -1,9 +1,14 @@
 import {
   GET_VIDEOGAMES,
+  SEARCH_VIDEOGAMES,
   ORDERS,
   REGISTER_USER_ERROR,
   REGISTER_USER_SUCCESS,
 } from "../Actions_types/actions_types";
+import { ThunkDispatch } from "redux-thunk";
+import { AnyAction } from "redux";
+
+export type AppDispatch = ThunkDispatch<RootState, unknown, AnyAction>;
 
 export interface RootState {
   allVideogames: any[];
@@ -69,6 +74,12 @@ const rootReducer = (
       return {
         ...state,
         error: action.payload,
+      };
+
+    case SEARCH_VIDEOGAMES:
+      return {
+        ...state,
+        allVideogames: action.payload,
       };
 
     default:

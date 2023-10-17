@@ -36,7 +36,16 @@ const Home: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    dispatch(getVideogames()).then(() => setLoading(false));
+    const fetchData = async () => {
+      try {
+        await dispatch(getVideogames());
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
   }, [dispatch]);
 
   useEffect(() => {
@@ -64,35 +73,32 @@ const Home: React.FC = () => {
 
   return isAuthenticated ? (
     <>
-      {loading && <Loading />}
-      {!loading && (
-        <div className={styles.homeContainer}>
-          <div className={styles.header}>
-            <h1>Videogames Store</h1>
-            <div>
-              <img src={user?.picture} alt={user?.name} />
-              <h2>{user?.name}</h2>
-              <p>{user?.email}</p>
-            </div>
-            <div className={styles.sortContainer}>
-              <label>Order by Name:</label>
-              <select onChange={onChangeOrder} name="" id="">
-                <option defaultChecked value="default">
-                  -
-                </option>
-                <option value="asc">A-Z</option>
-                <option value="des">Z-A</option>
-              </select>
-            </div>
+      <div className={styles.homeContainer}>
+        <div className={styles.header}>
+          <h1>Videogames Store</h1>
+          <div>
+            <img src={user?.picture} alt={user?.name} />
+            <h2>{user?.name}</h2>
+            <p>{user?.email}</p>
           </div>
-          <Cards allVideogames={currentVideogames} />
-          <Pagination
-            key={videogamesToShow.length}
-            items={videogamesToShow}
-            onPageChange={setCurrentVideogames}
-          />
+          <div className={styles.sortContainer}>
+            <label>Order by Name:</label>
+            <select onChange={onChangeOrder} name="" id="">
+              <option defaultChecked value="default">
+                -
+              </option>
+              <option value="asc">A-Z</option>
+              <option value="des">Z-A</option>
+            </select>
+          </div>
         </div>
-      )}
+        <Cards allVideogames={currentVideogames} />
+        <Pagination
+          key={videogamesToShow.length}
+          items={videogamesToShow}
+          onPageChange={setCurrentVideogames}
+        />
+      </div>
     </>
   ) : (
     (() => {

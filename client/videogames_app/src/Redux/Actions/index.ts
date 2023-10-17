@@ -1,15 +1,23 @@
 import axios from "axios";
-import { Dispatch } from "redux";
-import { Action } from "redux";
+import { Dispatch, AnyAction, Action } from "redux";
+import { ThunkAction, ThunkDispatch } from "redux-thunk";
+import { RootState } from "../Reducer";
 import {
   GET_VIDEOGAMES,
-  ORDERS,
   POST_VIDEOGAME,
+  SEARCH_VIDEOGAMES,
+  ORDERS,
   REGISTER_USER_SUCCESS,
   REGISTER_USER_ERROR,
 } from "../Actions_types/actions_types";
 
-type ThunkAction = (dispatch: Dispatch<Action<any>>) => Promise<any>;
+type AppThunk<ReturnType = void> = ThunkAction<
+  ReturnType,
+  RootState,
+  unknown,
+  Action<string>
+>;
+
 export type AppActions = PostVideogameAction;
 
 export interface VideogameInfo {
@@ -26,13 +34,9 @@ interface PostVideogameAction {
 }
 
 // Actions
-
-export const registerUser = (userData: {
-  name: any;
-  email: any;
-  picture: any;
-}): ThunkAction => {
-  return async function (dispatch: Dispatch): Promise<void> {
+export const registerUser =
+  (userData: { name: any; email: any; picture: any }): AppThunk =>
+  async (dispatch) => {
     try {
       const response = await axios.post(
         "http://localhost:3001/users/register",
@@ -57,10 +61,10 @@ export const registerUser = (userData: {
       });
     }
   };
-};
 
-export const postVideogame = (info: VideogameInfo): ThunkAction => {
-  return async function (_dispatch: Dispatch): Promise<void> {
+export const postVideogame =
+  (info: VideogameInfo): AppThunk =>
+  async (_dispatch) => {
     try {
       await axios.post("http://localhost:3001/videogames/", info);
       alert("Videogame has been created successfully");
@@ -68,29 +72,48 @@ export const postVideogame = (info: VideogameInfo): ThunkAction => {
       alert((error as Error).message);
     }
   };
-};
 
-export const getVideogames = () => {
-  return async function (dispatch: Dispatch): Promise<any> {
+export const getVideogames = (): AppThunk => {
+  return async function (dispatch: Dispatch): Promise<void> {
     try {
       const response = await axios.get("http://localhost:3001/videogames/");
       console.log(response);
 
-      return dispatch({
+      dispatch({
         type: GET_VIDEOGAMES,
         payload: response.data,
       });
+      return Promise.resolve(); // Asegúrate de retornar una promesa resuelta aquí
     } catch (error) {
       alert("Error! Videogames could not be required");
+      return Promise.reject(); // En caso de error, retornamos una promesa rechazada
     }
   };
 };
 
-export const filterByNameVideogames = (order: string) => {
-  return function (dispatch: Dispatch) {
-    return dispatch({
+export const filterByNameVideogames =
+  (order: string) =>
+  (dispatch: ThunkDispatch<RootState, unknown, AnyAction>): void => {
+    dispatch({
       type: ORDERS,
       payload: order,
     });
   };
-};
+
+export const searchVideogamesByName =
+  (name: string): AppThunk =>
+  async (dispatch) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3001/videogames?name=${name}`
+      );
+      console.log(response);
+
+      dispatch({
+        type: SEARCH_VIDEOGAMES,
+        payload: response.data,
+      });
+    } catch (error) {
+      alert("Error! Videogames could not be found by name");
+    }
+  };
