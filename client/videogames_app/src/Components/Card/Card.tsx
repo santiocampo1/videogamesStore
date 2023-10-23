@@ -15,6 +15,10 @@ const Card: React.FC<CardProps> = ({
   image,
   genres,
 }) => {
+  const handleGetNowClick = () => {
+    window.location.href = "https://www.mercadopago.com/checkout";
+  };
+
   return (
     <div className={styles.cardContainer}>
       <h3>{name}</h3>
@@ -28,6 +32,9 @@ const Card: React.FC<CardProps> = ({
           </p>
         ))}
       </div>
+      <button onClick={handleGetNowClick} className={styles.getNowButton}>
+        Get Now
+      </button>
     </div>
   );
 };

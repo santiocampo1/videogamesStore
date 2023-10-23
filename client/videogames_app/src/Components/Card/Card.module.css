@@ -46,6 +46,21 @@ img {
   font-size: 0.8rem;
 }
 
+.getNowButton {
+  margin-top: 10px;
+  padding: 8px 15px;
+  background-color: #1e90ff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.getNowButton:hover {
+  background-color: #187bcd;
+}
+
 /* Phones */
 @media (max-width: 576px) {
   .cardContainer {
